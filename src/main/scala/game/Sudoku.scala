@@ -3,7 +3,7 @@ package game
 import scala.annotation.tailrec
 import scala.util.Try
 
-private class Sudoku(sudoku: Array[Array[Int]], correctValue: Int) {
+private class Sudoku(sudoku: Seq[Seq[Int]], correctValue: Int) {
 
   //Regexp of correct slot value
   val regexp = "([1-9])".r
@@ -62,7 +62,7 @@ private class Sudoku(sudoku: Array[Array[Int]], correctValue: Int) {
    * @throws IncorrectResultException if result is incorrect
    * @throws IncorrectValueException if row length is incorrect
   */
-  private def checkRow(row: Array[Int], columns: Map[Int, Int]): Map[Int, Int] = {
+  private def checkRow(row: Seq[Int], columns: Map[Int, Int]): Map[Int, Int] = {
     /** 
        * Function for summing column values
        * 
@@ -72,7 +72,7 @@ private class Sudoku(sudoku: Array[Array[Int]], correctValue: Int) {
        * 
        * @return [[scala.collection.immutable.Map]] contains sum of column values after accumulation
       */
-    def sum(columns: Map[Int, Int], row: Array[Int], rowIndex: Int): Map[Int, Int] = 
+    def sum(columns: Map[Int, Int], row: Seq[Int], rowIndex: Int): Map[Int, Int] = 
       columns + ((rowIndex,  columns.getOrElse(rowIndex, 0) + row(rowIndex)))
 
     row match {
@@ -118,11 +118,11 @@ object Sudoku {
    * 
    * @return [[scala.Int]] sum of number series
   */
-  private def sum(sudoku: Array[Array[Int]]): Int = sudoku.zipWithIndex.foldLeft(0) {
+  private def sum(sudoku: Seq[Seq[Int]]): Int = sudoku.zipWithIndex.foldLeft(0) {
     case (acc, (rows, columnIndex)) => acc + columnIndex + 1
   }
 
-  def apply(sudoku: Array[Array[Int]]) = new Sudoku(sudoku, sum(sudoku))
+  def apply(sudoku: Seq[Seq[Int]]) = new Sudoku(sudoku, sum(sudoku))
 }
 
 //Exception for wrong sudoku solution
