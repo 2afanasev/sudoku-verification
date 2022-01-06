@@ -17,7 +17,7 @@ private class Sudoku(sudoku: Seq[Seq[Int]], correctValue: Int) {
    * @throws IncorrectLengthException if length is incorrect
    * @throws IncorrectValueException if value is incorrect
   */
-  def resolve: Boolean = checkColumn (sudoku.foldLeft(Map.empty) {
+  def resolve: Boolean = checkColumn (sudoku.foldLeft(Map.empty.withDefaultValue(0)) {
       case (acc, rec) => checkRow(rec, acc)
     })
 
@@ -73,7 +73,7 @@ private class Sudoku(sudoku: Seq[Seq[Int]], correctValue: Int) {
        * @return [[scala.collection.immutable.Map]] contains sum of column values after accumulation
       */
     def sum(columns: Map[Int, Int], row: Seq[Int], rowIndex: Int): Map[Int, Int] = 
-      columns + ((rowIndex,  columns.getOrElse(rowIndex, 0) + row(rowIndex)))
+      columns + ((rowIndex,  columns(rowIndex) + row(rowIndex)))
 
     row match {
       case _ if row.length != sudoku.length => throw new IncorrectLengthException
